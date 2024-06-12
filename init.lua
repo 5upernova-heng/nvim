@@ -331,6 +331,8 @@ require('lazy').setup({
         end,
       },
       { 'nvim-telescope/telescope-ui-select.nvim' },
+      { 'nvim-lua/plenary.nvim' },
+      { 'debugloop/telescope-undo.nvim' },
 
       -- Useful for getting pretty icons, but requires a Nerd Font.
       { 'nvim-tree/nvim-web-devicons', enabled = vim.g.have_nerd_font },
@@ -373,6 +375,7 @@ require('lazy').setup({
           },
         },
       }
+      require('telescope').load_extension 'undo'
 
       -- Enable Telescope extensions if they are installed
       pcall(require('telescope').load_extension, 'fzf')
