@@ -84,6 +84,15 @@ I hope you enjoy your Neovim journey,
 P.S. You can delete this when you're done too. It's your config now! :)
 --]]
 
+-- key remapping
+local function apply_xmodmap()
+  if vim.fn.has 'unix' == 1 and vim.fn.filereadable(vim.fn.expand '~/.Xmodmap') == 1 then
+    vim.fn.system 'xmodmap ~/.Xmodmap'
+  end
+end
+
+vim.api.nvim_create_user_command('ReloadXmodmap', apply_xmodmap, {})
+
 -- Set <space> as the leader key
 -- See `:help mapleader`
 --  NOTE: Must happen before plugins are loaded (otherwise wrong leader will be used)
