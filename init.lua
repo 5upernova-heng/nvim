@@ -943,6 +943,10 @@ require('lazy').setup({
       },
       indent = { enable = true, disable = { 'ruby' } },
     },
+    config = function(_, opts)
+      require('nvim-treesitter.install').compilers = { 'clang' }
+      require('nvim-treesitter.configs').setup(opts)
+    end,
     -- There are additional nvim-treesitter modules that you can use to interact
     -- with nvim-treesitter. You should go explore a few and see what interests you:
     --
