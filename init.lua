@@ -773,11 +773,44 @@ require('lazy').setup({
       'hrsh7th/cmp-nvim-lsp',
       'hrsh7th/cmp-path',
       'hrsh7th/cmp-cmdline',
+      'yehuohan/cmp-im',
+      '5upernova-heng/cmp-im-zh',
     },
     config = function()
       -- See `:help cmp`
       local cmp = require 'cmp'
       local luasnip = require 'luasnip'
+      local cmp_im = require 'cmp_im'
+      cmp_im.setup {
+        -- Enable Noice
+        noice = true,
+        -- Enable/Disable IM
+        enable = false,
+        -- IM tables path array
+        tables = require('cmp_im_zh').tables { 'huge_flypy' },
+        -- Function to format IM-key and IM-tex for completion display
+        format = function(key, text)
+          return vim.fn.printf('%-15S %s', text, key)
+        end,
+        -- Max number entries to show for completion of each table
+        maxn = 8,
+      }
+
+      -- toggle cmp_im
+      vim.keymap.set({ 'n', 'v', 'c', 'i' }, '<M-;>', function()
+        local result = require('cmp_im').toggle()
+        vim.notify(string.format('IM is %s', result and 'enabled' or 'disabled'))
+        if result then
+          for lhs, rhs in pairs(require('cmp_im_zh').symbols()) do
+            vim.keymap.set('i', lhs, rhs)
+          end
+        else
+          for lhs, _ in pairs(require('cmp_im_zh').symbols()) do
+            vim.keymap.del('i', lhs)
+          end
+        end
+      end)
+
       luasnip.config.setup {}
 
       cmp.setup {
@@ -850,6 +883,7 @@ require('lazy').setup({
           { name = 'luasnip' },
           { name = 'path' },
           { name = 'cmdline' },
+          { name = 'IM' },
         },
       }
       -- `/` cmdline setup.
@@ -1022,7 +1056,145 @@ require('lazy').setup({
     'OXY2DEV/markview.nvim',
     lazy = false, -- Recommended
     -- ft = "markdown" -- If you decide to lazy-load anyway
+    config = function()
+      latex = {
+        enable = true,
 
+        --- Bracket conceal configuration.
+        --- Shows () in specific cases
+        brackets = {
+          enable = true,
+
+          --- Highlight group for the ()
+          ---@type string
+          hl = '@punctuation.brackets',
+        },
+
+        --- LaTeX blocks renderer
+        block = {
+          enable = true,
+
+          --- Highlight group for the block
+          ---@type string
+          hl = 'Code',
+
+          --- Virtual text to show on the bottom
+          --- right.
+          --- First value is the text and second value
+          --- is the highlight group.
+          ---@type string[]
+          text = { ' LaTeX ', 'Special' },
+        },
+
+        --- Configuration for inline LaTeX maths
+        inline = {
+          enable = true,
+        },
+
+        --- Configuration for operators(e.g. "\frac{1}{2}")
+        operators = {
+          enable = true,
+          configs = {
+            sin = {
+              --- Configuration for the extmark added
+              --- to the name of the operator(e.g. "\sin").
+              ---
+              --- see `nvim_buf_set_extmark()` for all the
+              --- options.
+              ---@type table
+              operator = {
+                conceal = '',
+                virt_text = { { '𝚜𝚒𝚗', 'Special' } },
+              },
+
+              --- Configuration for the arguments of this
+              --- operator.
+              --- Item index is used to apply the configuration
+              --- to a specific argument
+              ---@type table[]
+              args = {
+                {
+                  --- Extmarks are only added
+                  --- if a config for it exists.
+
+                  --- Configuration for the extmark
+                  --- added before this argument.
+                  ---
+                  --- see `nvim_buf_set_extmark` for more.
+                  before = {},
+
+                  --- Configuration for the extmark
+                  --- added after this argument.
+                  ---
+                  --- see `nvim_buf_set_extmark` for more.
+                  after = {},
+
+                  --- Configuration for the extmark
+                  --- added to the range of text of
+                  --- this argument.
+                  ---
+                  --- see `nvim_buf_set_extmark` for more.
+                  scope = {},
+                },
+              },
+            },
+          },
+        },
+
+        --- Configuration for LaTeX symbols.
+        symbols = {
+          enable = true,
+
+          --- Highlight group for the symbols.
+          ---@type string?
+          hl = '@operator.latex',
+
+          --- Allows adding/modifying symbol definitions.
+          overwrite = {
+            --- Symbols can either be strings or functions.
+            --- When the value is a function it receives the buffer
+            --- id as the parameter.
+            ---
+            --- The resulting string is then used.
+            ---@param buffer integer.
+            today = function(buffer)
+              return os.date '%d %B, %Y'
+            end,
+          },
+
+          --- Create groups of symbols to only change their
+          --- appearance.
+          groups = {
+            {
+              --- Matcher for this group.
+              ---
+              --- Can be a list of symbols or a function
+              --- that takes the symbol as the parameter
+              --- and either returns true or false.
+              ---
+              ---@type string[] | fun(symbol: string): boolean
+              match = { 'lim', 'today' },
+
+              --- Highlight group for this group.
+              ---@type string
+              hl = 'Special',
+            },
+          },
+        },
+
+        subscript = {
+          enable = true,
+
+          hl = 'MarkviewLatexSubscript',
+        },
+
+        superscript = {
+          enable = true,
+
+          hl = 'MarkviewLatexSuperscript',
+        },
+      }
+    end,
     dependencies = {
       -- You will not need this if you installed the
       -- parsers manually
