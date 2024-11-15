@@ -1224,6 +1224,27 @@ require('lazy').setup({
       require('bufferline').setup {}
     end,
   },
+  -- colorizer
+  {
+    'norcalli/nvim-colorizer.lua',
+    config = function()
+      require('colorizer').setup()
+    end,
+  },
+  -- hop
+  {
+    'phaazon/hop.nvim',
+    branch = 'v1',
+    config = function()
+      local hop = require 'hop'
+      hop.setup {
+        keys = 'etovxqpdygfblzhckisuran',
+        extensions = {
+          'hop-zh-by-flypy',
+        },
+      }
+    end,
+  },
 
   -- The following comments only work if you have downloaded the kickstart repo, not just copy pasted the
   -- init.lua. If you want these files, they are in the repository, so you can just download them and
