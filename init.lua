@@ -895,7 +895,7 @@ require('lazy').setup({
               Variable = '',
               Property = '',
             }
-            vim_item.kind = icons[vim_item.kind] .. ' ' .. vim_item.kind
+            vim_item.kind = (icons[vim_item.kind] or '') .. ' ' .. vim_item.kind
             -- source
             local source = entry.source.name
             vim_item.menu = source
@@ -1043,6 +1043,13 @@ require('lazy').setup({
     opts = {},
     -- Optional dependencies
     dependencies = { 'nvim-tree/nvim-web-devicons' },
+    config = function()
+      require('oil').setup {
+        view_options = {
+          show_hidden = true,
+        },
+      }
+    end,
   },
   -- outline.nvim
   {
