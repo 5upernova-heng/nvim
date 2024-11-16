@@ -893,6 +893,7 @@ require('lazy').setup({
               Function = '󰊕',
               Text = '󰦨',
               Variable = '',
+              Property = '',
             }
             vim_item.kind = icons[vim_item.kind] .. ' ' .. vim_item.kind
             -- source
