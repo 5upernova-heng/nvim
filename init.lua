@@ -882,31 +882,35 @@ require('lazy').setup({
           { name = 'nvim_lsp' },
           { name = 'luasnip' },
           { name = 'path' },
-          { name = 'cmdline' },
           { name = 'IM' },
         },
-      }
-      -- `/` cmdline setup.
-      cmp.setup.cmdline('/', {
-        mapping = cmp.mapping.preset.cmdline(),
-        sources = {
-          { name = 'buffer' },
+        formatting = {
+          format = function(entry, vim_item)
+            -- icons
+            local icons = {
+              Class = '',
+              Field = '',
+              Function = '󰊕',
+              Text = '󰦨',
+              Variable = '',
+            }
+            vim_item.kind = icons[vim_item.kind] .. ' ' .. vim_item.kind
+            -- source
+            local source = entry.source.name
+            vim_item.menu = source
+
+            if source == 'nvim_lsp' then
+              local lspserver_name = nil
+              pcall(function()
+                lspserver_name = entry.source.source.client.name
+                vim_item.menu = lspserver_name
+              end)
+            end
+
+            return vim_item
+          end,
         },
-      })
-      -- `:` cmdline setup.
-      cmp.setup.cmdline(':', {
-        mapping = cmp.mapping.preset.cmdline(),
-        sources = cmp.config.sources({
-          { name = 'path' },
-        }, {
-          {
-            name = 'cmdline',
-            option = {
-              ignore_cmds = { 'Man', '!' },
-            },
-          },
-        }),
-      })
+      }
     end,
   },
 
@@ -1239,9 +1243,6 @@ require('lazy').setup({
       local hop = require 'hop'
       hop.setup {
         keys = 'etovxqpdygfblzhckisuran',
-        extensions = {
-          'hop-zh-by-flypy',
-        },
       }
     end,
   },
