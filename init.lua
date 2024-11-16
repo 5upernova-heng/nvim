@@ -894,6 +894,8 @@ require('lazy').setup({
               Text = '󰦨',
               Variable = '',
               Property = '',
+              File = '',
+              Folder = '',
             }
             vim_item.kind = (icons[vim_item.kind] or '') .. ' ' .. vim_item.kind
             -- source
