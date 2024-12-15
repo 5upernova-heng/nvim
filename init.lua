@@ -430,6 +430,7 @@ require('lazy').setup({
       vim.keymap.set('n', '<leader>sd', builtin.diagnostics, { desc = '[S]earch [D]iagnostics' })
       vim.keymap.set('n', '<leader>sr', builtin.resume, { desc = '[S]earch [R]esume' })
       vim.keymap.set('n', '<leader>su', '<CMD>Telescope undo<CR>', { desc = '[S]earch [U]ndo History' })
+      vim.keymap.set('n', '<leader>sn', '<CMD>Telescope notify<CR>', { desc = '[S]earch [N]otifications' })
       vim.keymap.set('n', '<leader>s.', builtin.oldfiles, { desc = '[S]earch Recent Files ("." for repeat)' })
       vim.keymap.set('n', '<leader><leader>', builtin.buffers, { desc = '[ ] Find existing buffers' })
 
@@ -452,9 +453,9 @@ require('lazy').setup({
       end, { desc = '[S]earch [/] in Open Files' })
 
       -- Shortcut for searching your Neovim configuration files
-      vim.keymap.set('n', '<leader>sn', function()
+      vim.keymap.set('n', '<leader>sc', function()
         builtin.find_files { cwd = vim.fn.stdpath 'config' }
-      end, { desc = '[S]earch [N]eovim files' })
+      end, { desc = '[S]earch neovim [C]onfig files' })
     end,
   },
 
@@ -1026,6 +1027,19 @@ require('lazy').setup({
       --   If not available, we use `mini` as the fallback
       'rcarriga/nvim-notify',
     },
+  },
+  -- notify
+  {
+    'rcarriga/nvim-notify',
+    opts = {},
+    dependencies = {},
+    config = function()
+      require('notify').setup {
+        timeout = 3000,
+        render = 'wrapped-compact',
+        max_width = 50,
+      }
+    end,
   },
   -- oil.nvim
   {
