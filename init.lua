@@ -886,18 +886,6 @@ require('lazy').setup({
         },
         formatting = {
           format = function(entry, vim_item)
-            -- icons
-            local icons = {
-              Class = '',
-              Field = '',
-              Function = '󰊕',
-              Text = '󰦨',
-              Variable = '',
-              Property = '',
-              File = '',
-              Folder = '',
-            }
-            vim_item.kind = (icons[vim_item.kind] or '') .. ' ' .. vim_item.kind
             -- source
             local source = entry.source.name
             vim_item.menu = source
