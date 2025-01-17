@@ -1,13 +1,14 @@
 return {
   'nvim-lualine/lualine.nvim',
-  dependencies = { 'nvim-tree/nvim-web-devicons' },
+  dependencies = { 'nvim-tree/nvim-web-devicons', 'folke/tokyonight.nvim' },
   config = function()
+    local colors = require('tokyonight.colors').setup()
     require('lualine').setup {
       options = {
         icons_enabled = true,
         theme = 'auto',
-        component_separators = { left = '', right = '' },
-        section_separators = { left = '', right = '' },
+        component_separators = '|',
+        section_separators = '|',
         disabled_filetypes = {
           statusline = {},
           winbar = {},
@@ -23,12 +24,68 @@ return {
         },
       },
       sections = {
-        lualine_a = { 'mode' },
-        lualine_b = { 'branch', 'diff', 'diagnostics' },
-        lualine_c = { 'filename' },
-        lualine_x = { 'encoding', 'fileformat', 'filetype' },
-        lualine_y = { 'progress' },
-        lualine_z = { 'location' },
+        lualine_a = {},
+        lualine_b = {},
+        lualine_c = {
+          {
+            'mode',
+            fmt = function(str)
+              return str:sub(1, 1)
+            end,
+            color = function()
+              -- auto change color according to neovims mode
+              local mode_color = {
+                n = colors.blue,
+                i = colors.green,
+                v = colors.blue,
+                [''] = colors.blue,
+                V = colors.magenta,
+                c = colors.magenta,
+                no = colors.red,
+                s = colors.orange,
+                S = colors.orange,
+                [''] = colors.orange,
+                ic = colors.yellow,
+                R = colors.orange,
+                Rv = colors.orange,
+                cv = colors.red,
+                ce = colors.red,
+                r = colors.cyan,
+                rm = colors.cyan,
+                ['r?'] = colors.cyan,
+                ['!'] = colors.red,
+                t = colors.red,
+              }
+              return { fg = colors.black, bg = mode_color[vim.fn.mode()], gui = 'bold' }
+            end,
+          },
+          'branch',
+          'diff',
+          'diagnostics',
+          {
+            function()
+              local msg = 'No Active Lsp'
+              local buf_ft = vim.api.nvim_get_option_value('filetype', { buf = 0 })
+              local clients = vim.lsp.get_clients()
+              if next(clients) == nil then
+                return msg
+              end
+              for _, client in ipairs(clients) do
+                ---@diagnostic disable-next-line: undefined-field
+                local filetypes = client.config.filetypes
+                if filetypes and vim.fn.index(filetypes, buf_ft) ~= -1 then
+                  return client.name
+                end
+              end
+              return msg
+            end,
+            icon = ' LSP:',
+            color = { fg = '#ffffff', gui = 'italic' },
+          },
+        },
+        lualine_x = { 'location', 'encoding', 'fileformat', 'filetype' },
+        lualine_y = {},
+        lualine_z = {},
       },
       inactive_sections = {
         lualine_a = {},
