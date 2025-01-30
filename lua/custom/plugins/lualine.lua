@@ -65,11 +65,11 @@ return {
           {
             function()
               local buf_ft = vim.api.nvim_get_option_value('filetype', { buf = 0 })
+              local msg = ''
               local clients = vim.lsp.get_clients()
               if next(clients) == nil then
-                return 'No Active Lsp'
+                msg = 'No Active Lsp'
               end
-              local msg = ''
               for _, client in ipairs(clients) do
                 ---@diagnostic disable-next-line: undefined-field
                 local filetypes = client.config.filetypes
@@ -81,9 +81,24 @@ return {
                   end
                 end
               end
-              return msg
+
+              local conform = ''
+              local formatters = require('conform').list_formatters()
+              for _, formatter in ipairs(formatters) do
+                ---@diagnostic disable-next-line: undefined-field
+                if conform == '' then
+                  conform = formatter.name
+                else
+                  conform = conform .. ' + ' .. formatter.name
+                end
+              end
+              if conform == '' then
+                return msg
+              else
+                return msg .. ' & ' .. conform
+              end
             end,
-            icon = ' LSP:',
+            icon = ' ',
             color = { fg = '#ffffff', gui = 'italic' },
           },
         },
