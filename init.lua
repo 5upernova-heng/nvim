@@ -24,6 +24,10 @@ end ---@diagnostic disable-next-line: undefined-field
 vim.opt.rtp:prepend(lazypath)
 
 require('lazy').setup {
+  change_detection = {
+    enabled = true,
+    notify = true,
+  },
   'tpope/vim-sleuth', -- Detect tabstop and shiftwidth automatically
   {
     'folke/tokyonight.nvim',
