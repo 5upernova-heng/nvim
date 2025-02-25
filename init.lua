@@ -5,6 +5,11 @@ vim.g.have_nerd_font = true
 vim.o.guifont = 'FiraCode Nerd Font:h12'
 vim.o.termguicolors = true
 
+-- Neovide
+if vim.g.neovide then
+  vim.g.neovide_title_background_color = string.format('%x', vim.api.nvim_get_hl(0, { id = vim.api.nvim_get_hl_id_by_name 'Normal' }).bg)
+end
+
 if vim.fn.has 'win32' == 1 or vim.fn.has 'win64' == 1 then
   vim.opt.shell = vim.fn.executable 'pwsh' and 'pwsh' or 'powershell'
   vim.opt.shellcmdflag =
