@@ -104,7 +104,20 @@ return { -- Autocompletion
         -- If you prefer more traditional completion keymaps,
         -- you can uncomment the following lines
         ['<CR>'] = cmp.mapping.confirm { select = true },
-        ['<Tab>'] = cmp.mapping.select_next_item(),
+        ['<Tab>'] = cmp.mapping(function(fallback)
+          if require('copilot.suggestion').is_visible() then
+            require('copilot.suggestion').accept()
+          elseif cmp.visible() then
+            cmp.select_next_item { behavior = cmp.SelectBehavior.Insert }
+          elseif luasnip.expandable() then
+            luasnip.expand()
+          else
+            fallback()
+          end
+        end, {
+          'i',
+          's',
+        }),
         ['<S-Tab>'] = cmp.mapping.select_prev_item(),
 
         -- Manually trigger a completion from nvim-cmp.
