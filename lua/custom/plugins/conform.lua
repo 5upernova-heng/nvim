@@ -2,6 +2,9 @@ return {
   'stevearc/conform.nvim',
   event = { 'BufWritePre' },
   cmd = { 'ConformInfo' },
+  cond = function()
+    return not vim.g.vscode
+  end,
   keys = {
     {
       '<leader>f',

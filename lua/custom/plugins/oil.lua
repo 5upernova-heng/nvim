@@ -1,6 +1,9 @@
 return {
   'stevearc/oil.nvim',
   opts = {},
+  cond = function()
+    return not vim.g.vscode
+  end,
   -- Optional dependencies
   dependencies = { 'nvim-tree/nvim-web-devicons' },
   config = function()

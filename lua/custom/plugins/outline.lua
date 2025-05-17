@@ -1,5 +1,8 @@
 return {
   'hedyhli/outline.nvim',
+  cond = function()
+    return not vim.g.vscode
+  end,
   config = function()
     -- Example mapping to toggle outline
     vim.keymap.set('n', '<leader>o', '<cmd>Outline<CR>', { desc = 'Toggle Outline' })

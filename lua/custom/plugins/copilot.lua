@@ -2,6 +2,9 @@ return {
   'zbirenbaum/copilot.lua',
   cmd = 'Copilot',
   event = 'InsertEnter',
+  cond = function()
+    return not vim.g.vscode
+  end,
   config = function()
     require('copilot').setup {
       panel = {

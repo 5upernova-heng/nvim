@@ -1,6 +1,9 @@
 return {
   'nvim-lualine/lualine.nvim',
   dependencies = { 'nvim-tree/nvim-web-devicons', 'folke/tokyonight.nvim' },
+  cond = function()
+    return not vim.g.vscode
+  end,
   config = function()
     local colors = require('tokyonight.colors').setup()
     require('lualine').setup {

@@ -1,5 +1,8 @@
 return {
   'bassamsdata/namu.nvim',
+  cond = function()
+    return not vim.g.vscode
+  end,
   config = function()
     require('namu').setup {
       -- Enable the modules you want

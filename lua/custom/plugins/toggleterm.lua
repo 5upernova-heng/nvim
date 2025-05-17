@@ -2,6 +2,9 @@ return {
   {
     'akinsho/toggleterm.nvim',
     version = '*',
+    cond = function()
+      return not vim.g.vscode
+    end,
     opts = {--[[ things you want to change go here]]
     },
     config = function()

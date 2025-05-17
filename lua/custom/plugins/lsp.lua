@@ -5,6 +5,9 @@ return {
     -- used for completion, annotations and signatures of Neovim apis
     'folke/lazydev.nvim',
     ft = 'lua',
+    cond = function()
+      return not vim.g.vscode
+    end,
     opts = {
       library = {
         -- Load luvit types when the `vim.uv` word is found
@@ -12,10 +15,19 @@ return {
       },
     },
   },
-  { 'Bilal2453/luvit-meta', lazy = true },
+  {
+    'Bilal2453/luvit-meta',
+    lazy = true,
+    cond = function()
+      return not vim.g.vscode
+    end,
+  },
   {
     -- Main LSP Configuration
     'neovim/nvim-lspconfig',
+    cond = function()
+      return not vim.g.vscode
+    end,
     dependencies = {
       -- Automatically install LSPs and related tools to stdpath for Neovim
       { 'williamboman/mason.nvim', config = true }, -- NOTE: Must be loaded before dependants

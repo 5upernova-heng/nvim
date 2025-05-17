@@ -6,6 +6,9 @@ return {
       'MunifTanjim/nui.nvim',
       'rcarriga/nvim-notify',
     },
+    cond = function()
+      return not vim.g.vscode
+    end,
     config = function()
       require('noice').setup {
         lsp = {
@@ -29,6 +32,9 @@ return {
         render = 'wrapped-compact',
         max_width = 50,
       }
+    end,
+    cond = function()
+      return not vim.g.vscode
     end,
   },
 }
