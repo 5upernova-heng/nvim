@@ -2,7 +2,7 @@ vim.g.mapleader = ' '
 vim.g.maplocalleader = ' '
 
 vim.g.have_nerd_font = true
-vim.o.guifont = 'FiraCode Nerd Font:h12'
+vim.o.guifont = 'FiraCode Nerd Font,LXGW Bright Code:h12'
 vim.o.termguicolors = true
 
 -- Neovide
